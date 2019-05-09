@@ -50,6 +50,26 @@ class OperatorsActivity : AppCompatActivity() {
         //flatMap()
         //concatMap()
         //buffer()
+        //filterOperatorDemo()
+        //distinctDemo()
+        //skipDemo()
+        skipLast()
+    }
+
+    private fun skipLast() {
+        SkipLastDemo().skipLastData()
+    }
+
+    private fun skipDemo() {
+        SkipDemo().skipData()
+    }
+
+    private fun distinctDemo() {
+        DistinctDemo().distinctData()
+    }
+
+    private fun filterOperatorDemo() {
+        FilterOperatorDemo().filterData()
     }
 
     private fun buffer() {
