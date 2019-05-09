@@ -43,8 +43,33 @@ class OperatorsActivity : AppCompatActivity() {
         //arrayObservable()
         //multipleStringsObservable()
         //fromArraySample()
-        val rangeDemo = RangeDemo()
-        rangeDemo.getData()
+        //val rangeDemo = RangeDemo()
+        //rangeDemo.getData()
+        //create()
+        //mapData()
+        //flatMap()
+        //concatMap()
+        //buffer()
+    }
+
+    private fun buffer() {
+        BufferDemo().bufferData()
+    }
+
+    private fun concatMap() {
+        ConcatMap().concatMapData()
+    }
+
+    private fun flatMap() {
+       FlatMapDemo().flatMapData()
+    }
+
+    private fun create(){
+        CreateDemo().getData()
+    }
+
+    private fun mapData() {
+       MapDemo().mapData()
     }
 
     private fun fromArraySample() {
