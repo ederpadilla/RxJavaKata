@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".todolist.ToDoMainActivity"
+    tools:context=".todolist.ui.ToDoMainActivity"
     tools:showIn="@layout/activity_to_do_main">
 
 
