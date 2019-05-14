@@ -15,6 +15,16 @@ import com.example.rxjavasamples.movies.model.Movie
 import com.example.rxjavasamples.movies.model.MovieDBResponse
 import com.example.rxjavasamples.movies.service.RetrofitInstance
 import com.example.rxjavasamples.R
+import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.ObservableSource
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Function
+import io.reactivex.functions.Predicate
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
 
 import java.net.SocketTimeoutException
 import java.util.ArrayList
@@ -30,6 +40,9 @@ class MoviesActivity : AppCompatActivity() {
     private var movieAdapter: MovieAdapter? = null
     private var swipeContainer: SwipeRefreshLayout? = null
     private var call: Call<MovieDBResponse>? = null
+    private lateinit var  observable : Observable<MovieDBResponse>
+    private val compositeDisposable = CompositeDisposable()
+    private lateinit var  flowable : Flowable<MovieDBResponse>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,14 +53,86 @@ class MoviesActivity : AppCompatActivity() {
         supportActionBar!!.title = " TMDb Popular Movies Today"
         swipeContainer = findViewById(R.id.swipe_layout)
         swipeContainer!!.setColorSchemeResources(R.color.colorPrimary)
-        swipeContainer!!.setOnRefreshListener { getPopularMovies() }
-        init()
-        getPopularMovies()
+        swipeContainer!!.setOnRefreshListener { getRxPopularMovies() }
+        //getPopularMovies()
+        getRxPopularMovies()
+        //getFlowablePopularMovies()
 
     }
 
+    private fun getFlowablePopularMovies() {
+        val getMoviesDataService = RetrofitInstance.service
+        flowable = getMoviesDataService
+            .getPopularMoviesWithRxFlowable(this.getString(R.string.api_key))
+        compositeDisposable.add(
+            flowable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({response -> successPopularMoviesFlowable(response)},
+                    {error -> onErrorPopularMoviesFlowable(error)})
+        )
+    }
+
+    private fun onErrorPopularMoviesFlowable(error: Throwable) {
+        error.printStackTrace()
+    }
+
+    private fun successPopularMoviesFlowable(response: MovieDBResponse) {
+        DebugUtils.showLog("TAG","Response ${response.toString()}")
+    }
+
+
+    private fun getRxPopularMovies() {
+        val getMoviesDataService = RetrofitInstance.service
+        observable = getMoviesDataService
+            .getPopularMoviesWithRx(this.getString(R.string.api_key))
+        compositeDisposable.add(
+            observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(Function<MovieDBResponse, Observable<Movie>> {
+                        movieDBResponse ->
+                    Observable.fromArray(*movieDBResponse.movies!!.toTypedArray())
+                })
+                .filter(
+                    Predicate<Movie> { movie ->
+                        /*movie.voteAverage.let {
+                            it > 7.0
+                        }*/
+                        movie.voteAverage!! > 7.0
+                    })
+                .subscribeWith(object : DisposableObserver<Movie>(){
+                    override fun onComplete() {
+                        init()
+                        swipeContainer?.isRefreshing = false
+                    }
+
+                    override fun onNext(movie: Movie) {
+                        movies.add(movie)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        swipeContainer?.isRefreshing = false
+                        e.printStackTrace()
+                    }
+
+                })
+        )
+
+    }
+
+    private fun successPopularMovies(response: MovieDBResponse) {
+
+        movies = response.movies as ArrayList<Movie>
+        init()
+        swipeContainer?.isRefreshing = false
+    }
+
+    private fun onErrorPopularMovies(error : Throwable){
+        error.printStackTrace()
+        swipeContainer?.isRefreshing = false
+    }
+
     private fun getPopularMovies() {
-        DebugUtils.showLog("TAG","Entra aca")
         val getMoviesDataService = RetrofitInstance.service
         call = getMoviesDataService.getPopularMovies(this.getString(R.string.api_key))
         call!!.enqueue(object : Callback<MovieDBResponse> {
@@ -55,7 +140,7 @@ class MoviesActivity : AppCompatActivity() {
 
                 val movieDBResponse = response.body()
 
-                if (movieDBResponse != null && movieDBResponse.movies != null) {
+                if (movieDBResponse?.movies != null) {
 
 
                     movies = movieDBResponse.movies as ArrayList<Movie>
@@ -77,8 +162,6 @@ class MoviesActivity : AppCompatActivity() {
 
             }
         })
-
-        DebugUtils.showLog("TAG","Entra aca 2")
 
 
     }
@@ -106,12 +189,14 @@ class MoviesActivity : AppCompatActivity() {
 
     public override fun onDestroy() {
         super.onDestroy()
+        compositeDisposable.clear()
         if (call != null) {
             if (call!!.isExecuted) {
 
                 call!!.cancel()
             }
         }
+
     }
 }
 

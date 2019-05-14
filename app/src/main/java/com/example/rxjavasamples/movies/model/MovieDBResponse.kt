@@ -45,6 +45,10 @@ class MovieDBResponse : Parcelable {
         return 0
     }
 
+    override fun toString(): String {
+        return "MovieDBResponse(page=$page, totalMovies=$totalMovies, totalPages=$totalPages, movies=$movies)"
+    }
+
     companion object CREATOR : Creator<MovieDBResponse> {
         override fun createFromParcel(parcel: Parcel): MovieDBResponse {
             return MovieDBResponse(parcel)
@@ -54,6 +58,7 @@ class MovieDBResponse : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
 
 }
 
