@@ -3,14 +3,20 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.example.rxjavasamples">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
+            android:name=".App"
             android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".retrofit.ui.RetrofitSampleActivity">
+        </activity>
         <activity android:name=".rxbinding.RxBindingActivity">
         </activity>
         <activity android:name=".subjects.SubjectsActivity">
@@ -19,18 +25,30 @@
         </activity>
         <activity android:name=".MainActivity">
         </activity>
-        <activity android:name="com.example.androidtutz.todolistapp.AddToDoActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
-
+        <activity
+                android:name="com.example.androidtutz.todolistapp.AddToDoActivity"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name="com.example.androidtutz.todolistapp.ToDoMainActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity
+                android:name="com.example.androidtutz.todolistapp.ToDoMainActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity android:name=".movies.view.MoviesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+        </activity>
+        <activity
+                android:name=".movies.view.MovieActivity"
+                android:label="@string/title_activity_movie"
+                android:parentActivityName=".movies.view.MoviesActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".movies.view.MoviesActivity" />
         </activity>
 
     </application>
