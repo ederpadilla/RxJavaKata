@@ -7,12 +7,16 @@ import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 
 import com.example.rxjavasamples.room.db.entity.Contact
+import io.reactivex.Flowable
 
 @Dao
 interface ContactDao {
 
+/*    @get:Query("select * from contacts")
+    val contacts: List<Contact>*/
+
     @get:Query("select * from contacts")
-    val contacts: List<Contact>
+    val contacts: Flowable<List<Contact>>
 
     @Insert
     fun addContact(contact: Contact): Long

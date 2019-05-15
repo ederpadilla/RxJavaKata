@@ -22,6 +22,10 @@ import com.example.rxjavasamples.R
 import com.example.rxjavasamples.room.adapter.ContactsAdapter
 import com.example.rxjavasamples.room.db.ContactsAppDatabase
 import com.example.rxjavasamples.room.db.entity.Contact
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 
 import java.util.ArrayList
 
@@ -32,6 +36,9 @@ class ContactsActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
 
     private var contactsAppDatabase: ContactsAppDatabase? = null
+
+    private val compositeDisposable = CompositeDisposable()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +53,6 @@ class ContactsActivity : AppCompatActivity() {
                 .build()
         recyclerView = findViewById(R.id.recycler_view_contacts)
 
-        contactArrayList.addAll(contactsAppDatabase!!.contactDAO.contacts)
-
         contactsAdapter = ContactsAdapter(this, contactArrayList, this@ContactsActivity)
         val mLayoutManager = LinearLayoutManager(applicationContext)
         recyclerView?.let {
@@ -56,9 +61,25 @@ class ContactsActivity : AppCompatActivity() {
             it.adapter = contactsAdapter
         }
 
+        compositeDisposable.add(
+            contactsAppDatabase?.contactDAO?.contacts!!.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ contactList ->
+                    contactArrayList.clear()
+                    contactArrayList.addAll(contactList)
+                    contactsAdapter?.notifyDataSetChanged()
+                }, { throwable -> throwable.printStackTrace() })
+        )
+
+
 
         val fab = findViewById<View>(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { addAndEditContacts(false, null, -1) }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -137,11 +158,9 @@ class ContactsActivity : AppCompatActivity() {
 
     private fun deleteContact(contact: Contact?, position: Int) {
 
-        contactArrayList.removeAt(position)
         contact?.let {
             contactsAppDatabase!!.contactDAO.deleteContact(it)
         }
-        contactsAdapter!!.notifyDataSetChanged()
     }
 
     private fun updateContact(name: String, email: String, position: Int) {
@@ -153,26 +172,10 @@ class ContactsActivity : AppCompatActivity() {
 
         contactsAppDatabase!!.contactDAO.updateContact(contact)
 
-        contactArrayList[position] = contact
-
-        contactsAdapter!!.notifyDataSetChanged()
-
 
     }
 
     private fun createContact(name: String, email: String) {
-
         val id = contactsAppDatabase!!.contactDAO.addContact(Contact(0, name, email))
-
-
-        val contact = contactsAppDatabase!!.contactDAO.getContact(id)
-
-        if (contact != null) {
-
-            contactArrayList.add(0, contact)
-            contactsAdapter!!.notifyDataSetChanged()
-
-        }
-
     }
 }
