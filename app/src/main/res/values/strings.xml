@@ -14,4 +14,8 @@
     <string name="title_activity_movie">MovieActivity</string>
     <string name="movie_info">Movie Info</string>
     <string name="rate_button">Rate This Movie Now</string>
+
+
+    <string name="action_settings">Settings</string>
+
 </resources>

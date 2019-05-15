@@ -117,7 +117,6 @@ class MoviesActivity : AppCompatActivity() {
 
                 })
         )
-
     }
 
     private fun successPopularMovies(response: MovieDBResponse) {

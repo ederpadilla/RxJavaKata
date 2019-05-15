@@ -35,11 +35,6 @@
         </activity>
 
         <activity android:name=".movies.view.MoviesActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
                 android:name=".movies.view.MovieActivity"
@@ -51,6 +46,16 @@
                     android:value=".movies.view.MoviesActivity" />
         </activity>
 
+        <activity
+                android:name=".room.ui.ContactsActivity"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
