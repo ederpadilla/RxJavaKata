@@ -22,9 +22,12 @@ import com.example.rxjavasamples.R
 import com.example.rxjavasamples.room.adapter.ContactsAdapter
 import com.example.rxjavasamples.room.db.ContactsAppDatabase
 import com.example.rxjavasamples.room.db.entity.Contact
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
+import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 
 import java.util.ArrayList
@@ -39,6 +42,7 @@ class ContactsActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    private var rowIdOfInsertedMethod : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +53,6 @@ class ContactsActivity : AppCompatActivity() {
 
         contactsAppDatabase = Room.databaseBuilder<ContactsAppDatabase>(applicationContext,
                 ContactsAppDatabase::class.java!!, "ContactDb")
-                .allowMainThreadQueries()
                 .build()
         recyclerView = findViewById(R.id.recycler_view_contacts)
 
@@ -157,10 +160,30 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun deleteContact(contact: Contact?, position: Int) {
+        compositeDisposable.add(
+            Completable.fromAction {
+                contact?.let {
+                    contactsAppDatabase!!.contactDAO.deleteContact(it)
+                }
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver(){
+                    override fun onComplete() {
+                        Toast.makeText(applicationContext,
+                            "Contact deleted successfully $rowIdOfInsertedMethod",
+                            Toast.LENGTH_SHORT).show()
+                    }
 
-        contact?.let {
-            contactsAppDatabase!!.contactDAO.deleteContact(it)
-        }
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        Toast.makeText(applicationContext,
+                            "${e.message}",
+                            Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+        )
     }
 
     private fun updateContact(name: String, email: String, position: Int) {
@@ -169,13 +192,55 @@ class ContactsActivity : AppCompatActivity() {
 
         contact.name = name
         contact.email = email
+        compositeDisposable.add(
+            Completable.fromAction {
+                contactsAppDatabase!!.contactDAO.updateContact(contact)
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver(){
+                    override fun onComplete() {
+                        Toast.makeText(applicationContext,
+                            "Contact updated successfully $rowIdOfInsertedMethod",
+                            Toast.LENGTH_SHORT).show()
+                    }
 
-        contactsAppDatabase!!.contactDAO.updateContact(contact)
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        Toast.makeText(applicationContext,
+                            "${e.message}",
+                            Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+        )
 
 
     }
 
     private fun createContact(name: String, email: String) {
-        val id = contactsAppDatabase!!.contactDAO.addContact(Contact(0, name, email))
+        compositeDisposable.add(
+            Completable.fromAction { rowIdOfInsertedMethod =
+                contactsAppDatabase!!.contactDAO
+                    .addContact(Contact(0, name, email))
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver(){
+                    override fun onComplete() {
+                        Toast.makeText(applicationContext,
+                            "Contact added successfully $rowIdOfInsertedMethod",
+                            Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        Toast.makeText(applicationContext,
+                            "${e.message}",
+                            Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+        )
     }
 }

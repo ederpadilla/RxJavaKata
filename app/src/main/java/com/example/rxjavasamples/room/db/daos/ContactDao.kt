@@ -12,9 +12,6 @@ import io.reactivex.Flowable
 @Dao
 interface ContactDao {
 
-/*    @get:Query("select * from contacts")
-    val contacts: List<Contact>*/
-
     @get:Query("select * from contacts")
     val contacts: Flowable<List<Contact>>
 
