@@ -53,6 +53,10 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.1.0-beta01'
     implementation 'androidx.room:room-rxjava2:2.1.0-beta01'
 
+    //Life Cycle
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+
 
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

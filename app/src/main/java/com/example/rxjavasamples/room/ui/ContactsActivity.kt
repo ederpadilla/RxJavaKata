@@ -17,12 +17,15 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import com.example.rxjavasamples.R
 
 import com.example.rxjavasamples.room.adapter.ContactsAdapter
 import com.example.rxjavasamples.room.db.ContactsAppDatabase
 import com.example.rxjavasamples.room.db.entity.Contact
+import com.example.rxjavasamples.room.viewmodel.ContactViewModel
 import io.reactivex.Completable
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
@@ -44,15 +47,20 @@ class ContactsActivity : AppCompatActivity() {
 
     private var rowIdOfInsertedMethod : Long = 0
 
+    private lateinit var contactViewModel : ContactViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts)
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         supportActionBar!!.title = " Contacts Manager"
+        contactViewModel = ViewModelProviders
+            .of(this)
+            .get(ContactViewModel::class.java)
 
         contactsAppDatabase = Room.databaseBuilder<ContactsAppDatabase>(applicationContext,
-                ContactsAppDatabase::class.java!!, "ContactDb")
+                ContactsAppDatabase::class.java, "ContactDb")
                 .build()
         recyclerView = findViewById(R.id.recycler_view_contacts)
 
@@ -64,15 +72,12 @@ class ContactsActivity : AppCompatActivity() {
             it.adapter = contactsAdapter
         }
 
-        compositeDisposable.add(
-            contactsAppDatabase?.contactDAO?.contacts!!.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ contactList ->
-                    contactArrayList.clear()
-                    contactArrayList.addAll(contactList)
-                    contactsAdapter?.notifyDataSetChanged()
-                }, { throwable -> throwable.printStackTrace() })
-        )
+        contactViewModel.getAllContacts().observe(this,
+            androidx.lifecycle.Observer {
+                contactArrayList.clear()
+                contactArrayList.addAll(it)
+                contactsAdapter?.notifyDataSetChanged()
+            })
 
 
 
@@ -82,7 +87,8 @@ class ContactsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable.dispose()
+        contactViewModel.disposeObservers()
+        //compositeDisposable.dispose()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -160,7 +166,10 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun deleteContact(contact: Contact?, position: Int) {
-        compositeDisposable.add(
+        contact?.let {
+            contactViewModel.deleteContact(it)
+        }
+        /*compositeDisposable.add(
             Completable.fromAction {
                 contact?.let {
                     contactsAppDatabase!!.contactDAO.deleteContact(it)
@@ -183,7 +192,7 @@ class ContactsActivity : AppCompatActivity() {
                     }
 
                 })
-        )
+        )*/
     }
 
     private fun updateContact(name: String, email: String, position: Int) {
@@ -192,7 +201,8 @@ class ContactsActivity : AppCompatActivity() {
 
         contact.name = name
         contact.email = email
-        compositeDisposable.add(
+        contactViewModel.updateContact(contact)
+        /*compositeDisposable.add(
             Completable.fromAction {
                 contactsAppDatabase!!.contactDAO.updateContact(contact)
             }
@@ -213,13 +223,14 @@ class ContactsActivity : AppCompatActivity() {
                     }
 
                 })
-        )
+        )*/
 
 
     }
 
     private fun createContact(name: String, email: String) {
-        compositeDisposable.add(
+        contactViewModel.createContact(name,email)
+        /*compositeDisposable.add(
             Completable.fromAction { rowIdOfInsertedMethod =
                 contactsAppDatabase!!.contactDAO
                     .addContact(Contact(0, name, email))
@@ -241,6 +252,6 @@ class ContactsActivity : AppCompatActivity() {
                     }
 
                 })
-        )
+        )*/
     }
 }
