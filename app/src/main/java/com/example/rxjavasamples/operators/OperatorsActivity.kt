@@ -1,8 +1,8 @@
 package com.example.rxjavasamples.operators
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.rxjavasamples.DebugUtils
+import com.example.rxjavasamples.util.DebugUtils
 import com.example.rxjavasamples.R
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

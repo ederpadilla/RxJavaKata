@@ -1,7 +1,7 @@
 package com.example.rxjavasamples.room.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
 import com.example.rxjavasamples.room.db.daos.ContactDao
 import com.example.rxjavasamples.room.db.entity.Contact

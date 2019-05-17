@@ -1,14 +1,14 @@
 package com.example.rxjavasamples.room.ui
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +36,7 @@ class ContactsActivity : AppCompatActivity() {
 
     private var contactsAdapter: ContactsAdapter? = null
     private val contactArrayList = ArrayList<Contact>()
-    private var recyclerView: RecyclerView? = null
+    private var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
 
     private var contactsAppDatabase: ContactsAppDatabase? = null
 
@@ -57,10 +57,10 @@ class ContactsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_contacts)
 
         contactsAdapter = ContactsAdapter(this, contactArrayList, this@ContactsActivity)
-        val mLayoutManager = LinearLayoutManager(applicationContext)
+        val mLayoutManager = androidx.recyclerview.widget.LinearLayoutManager(applicationContext)
         recyclerView?.let {
             it.layoutManager = mLayoutManager
-            it.itemAnimator = DefaultItemAnimator() as RecyclerView.ItemAnimator?
+            it.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator() as androidx.recyclerview.widget.RecyclerView.ItemAnimator?
             it.adapter = contactsAdapter
         }
 

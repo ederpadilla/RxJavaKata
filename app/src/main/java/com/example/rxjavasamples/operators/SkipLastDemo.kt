@@ -1,6 +1,6 @@
 package com.example.rxjavasamples.operators
 
-import com.example.rxjavasamples.DebugUtils
+import com.example.rxjavasamples.util.DebugUtils
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -2,7 +2,7 @@ package com.example.rxjavasamples.movies.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ import java.util.ArrayList
 /**
  * Created by K. A. ANUSHKA MADUSANKA on 7/4/2018.
  */
-class MovieAdapter(private val context: Context, private val movies: ArrayList<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter(private val context: Context, private val movies: ArrayList<Movie>) : androidx.recyclerview.widget.RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_list_item, parent, false)
@@ -48,7 +48,7 @@ class MovieAdapter(private val context: Context, private val movies: ArrayList<M
     }
 
 
-    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MovieViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         var movieTitle: TextView
         var rate: TextView
@@ -64,7 +64,7 @@ class MovieAdapter(private val context: Context, private val movies: ArrayList<M
             itemView.setOnClickListener { view ->
                 val position = adapterPosition
 
-                if (position != RecyclerView.NO_POSITION) {
+                if (position != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
                     val selectedMovie = movies[position]
                     val intent = Intent(context, MovieActivity::class.java)
                     intent.putExtra("movie", selectedMovie)

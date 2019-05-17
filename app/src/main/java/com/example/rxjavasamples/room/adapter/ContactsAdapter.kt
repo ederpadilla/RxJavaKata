@@ -1,7 +1,7 @@
 package com.example.rxjavasamples.room.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +15,9 @@ import com.example.rxjavasamples.R
 import java.util.ArrayList
 
 
-class ContactsAdapter(private val context: Context, private val contactssList: ArrayList<Contact>, private val contactsActivity: ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>() {
+class ContactsAdapter(private val context: Context, private val contactssList: ArrayList<Contact>, private val contactsActivity: ContactsActivity) : androidx.recyclerview.widget.RecyclerView.Adapter<ContactsAdapter.MyViewHolder>() {
 
-    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MyViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         var name: TextView = view.findViewById(R.id.name)
         var emil: TextView = view.findViewById(R.id.email)

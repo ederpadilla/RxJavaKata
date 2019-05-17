@@ -9,7 +9,7 @@
               android:paddingRight="10dp"
               android:paddingTop="10dp"
               android:orientation="vertical"
-              tools:context=".MainActivity"
+              tools:context=".firststeps.MainActivity"
               tools:showIn="@layout/activity_main">
 
     <EditText

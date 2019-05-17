@@ -3,8 +3,8 @@ package com.example.androidtutz.todolistapp
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v4.app.Fragment
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +26,7 @@ import com.rengwuxian.materialedittext.MaterialEditText
  * Use the [UpdateToDoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UpdateToDoFragment : DialogFragment(), View.OnClickListener {
+class UpdateToDoFragment : androidx.fragment.app.DialogFragment(), View.OnClickListener {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -143,7 +143,7 @@ class UpdateToDoFragment : DialogFragment(), View.OnClickListener {
         private val ARG_PARAM2 = "param2"
 
 
-        lateinit var parentFragment: Fragment
+        lateinit var parentFragment: androidx.fragment.app.Fragment
         var fragmentTypeOfParent: Int = 0
         private var goal: ToDoListItem? = null
         private var objectCame: Any? = null
@@ -156,7 +156,7 @@ class UpdateToDoFragment : DialogFragment(), View.OnClickListener {
          * @return A new instance of fragment UpdateToDoFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, fragemtType: Int, fragmentToDeal: Fragment, `object`: Any): UpdateToDoFragment {
+        fun newInstance(param1: String, fragemtType: Int, fragmentToDeal: androidx.fragment.app.Fragment, `object`: Any): UpdateToDoFragment {
             val fragment = UpdateToDoFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)

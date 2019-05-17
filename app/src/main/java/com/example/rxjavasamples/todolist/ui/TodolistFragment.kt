@@ -6,13 +6,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -52,7 +52,7 @@ import com.example.rxjavasamples.R
  * Use the [TodolistFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TodolistFragment : Fragment() {
+class TodolistFragment : androidx.fragment.app.Fragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -60,7 +60,7 @@ class TodolistFragment : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
-    internal var recyclerViewAchievingGoals: RecyclerView? = null
+    internal var recyclerViewAchievingGoals: androidx.recyclerview.widget.RecyclerView? = null
     private lateinit var fabAddNewToDo: FloatingActionButton
     private var taskStatus = ""
     private var dateFront = ""
@@ -189,9 +189,14 @@ class TodolistFragment : Fragment() {
 
         goalAdapter = ToDoListAdapter(goalsList, 0, this@TodolistFragment)
 
-        recyclerViewAchievingGoals!!.layoutManager = LinearLayoutManager(activity)
-        recyclerViewAchievingGoals!!.itemAnimator = DefaultItemAnimator()
-        recyclerViewAchievingGoals!!.addItemDecoration(DividerItemDecoration(activity!!, LinearLayoutManager.VERTICAL))
+        recyclerViewAchievingGoals!!.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
+        recyclerViewAchievingGoals!!.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+        recyclerViewAchievingGoals!!.addItemDecoration(
+            androidx.recyclerview.widget.DividerItemDecoration(
+                activity!!,
+                androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+            )
+        )
 
         recyclerViewAchievingGoals!!.addOnItemTouchListener(RecyclerTouchListener(activity!!,
                 recyclerViewAchievingGoals!!, object : RecyclerTouchListener.ClickListener {

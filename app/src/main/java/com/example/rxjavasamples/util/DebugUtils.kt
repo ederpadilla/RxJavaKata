@@ -1,4 +1,4 @@
-package com.example.rxjavasamples
+package com.example.rxjavasamples.util
 
 import android.util.Log
 

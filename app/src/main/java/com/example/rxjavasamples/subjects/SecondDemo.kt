@@ -1,11 +1,8 @@
 package com.example.rxjavasamples.subjects
 
-import com.example.rxjavasamples.DebugUtils
-import io.reactivex.Observable
+import com.example.rxjavasamples.util.DebugUtils
 import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.AsyncSubject
 
 class SecondDemo {

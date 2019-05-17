@@ -1,8 +1,10 @@
-package com.example.rxjavasamples
+package com.example.rxjavasamples.firststeps
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.rxjavasamples.R
+import com.example.rxjavasamples.util.DebugUtils
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers

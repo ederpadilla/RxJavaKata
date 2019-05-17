@@ -1,14 +1,10 @@
 package com.example.rxjavasamples.movies.view
 
 import android.content.res.Configuration
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.widget.Toast
-import com.example.rxjavasamples.DebugUtils
+import com.example.rxjavasamples.util.DebugUtils
 
 import com.example.rxjavasamples.movies.adapter.MovieAdapter
 import com.example.rxjavasamples.movies.model.Movie
@@ -17,8 +13,6 @@ import com.example.rxjavasamples.movies.service.RetrofitInstance
 import com.example.rxjavasamples.R
 import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function
@@ -36,9 +30,9 @@ import retrofit2.Response
 class MoviesActivity : AppCompatActivity() {
 
     private var movies: ArrayList<Movie> = ArrayList()
-    private var recyclerView: RecyclerView? = null
+    private var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
     private var movieAdapter: MovieAdapter? = null
-    private var swipeContainer: SwipeRefreshLayout? = null
+    private var swipeContainer: androidx.swiperefreshlayout.widget.SwipeRefreshLayout? = null
     private var call: Call<MovieDBResponse>? = null
     private lateinit var  observable : Observable<MovieDBResponse>
     private val compositeDisposable = CompositeDisposable()
@@ -174,12 +168,12 @@ class MoviesActivity : AppCompatActivity() {
 
 
         if (this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView!!.layoutManager = GridLayoutManager(this, 2)
+            recyclerView!!.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 2)
         } else {
-            recyclerView!!.layoutManager = GridLayoutManager(this, 4)
+            recyclerView!!.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 4)
         }
 
-        recyclerView!!.itemAnimator = DefaultItemAnimator()
+        recyclerView!!.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
         recyclerView!!.adapter = movieAdapter
         movieAdapter!!.notifyDataSetChanged()
 

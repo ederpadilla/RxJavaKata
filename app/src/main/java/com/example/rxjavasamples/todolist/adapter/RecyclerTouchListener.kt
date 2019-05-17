@@ -1,7 +1,7 @@
 package com.example.androidtutz.todolistapp.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -10,7 +10,7 @@ import android.view.View
  * Created by K. A. ANUSHKA MADUSANKA on 12/29/2017.
  */
 
-class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, private val clickListener: ClickListener?) : RecyclerView.OnItemTouchListener {
+class RecyclerTouchListener(context: Context, recyclerView: androidx.recyclerview.widget.RecyclerView, private val clickListener: ClickListener?) : androidx.recyclerview.widget.RecyclerView.OnItemTouchListener {
 
 
     private val gestureDetector: GestureDetector
@@ -30,7 +30,7 @@ class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, privat
         })
     }
 
-    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+    override fun onInterceptTouchEvent(rv: androidx.recyclerview.widget.RecyclerView, e: MotionEvent): Boolean {
 
         val child = rv.findChildViewUnder(e.x, e.y)
         if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
@@ -39,7 +39,7 @@ class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, privat
         return false
     }
 
-    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+    override fun onTouchEvent(rv: androidx.recyclerview.widget.RecyclerView, e: MotionEvent) {}
 
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
 

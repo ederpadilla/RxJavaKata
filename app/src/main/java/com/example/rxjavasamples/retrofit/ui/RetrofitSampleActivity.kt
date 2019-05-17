@@ -1,15 +1,9 @@
 package com.example.rxjavasamples.retrofit.ui
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.rxjavasamples.R
 import kotlinx.android.synthetic.main.activity_retrofit_sample.*
-import com.jakewharton.rxbinding2.view.RxView
-import org.reactivestreams.Subscription
-import io.reactivex.functions.Action
-import android.R.attr.button
-import android.widget.Button
-import com.example.rxjavasamples.DebugUtils
+import com.example.rxjavasamples.util.DebugUtils
 import com.example.rxjavasamples.retrofit.api.RetrofitInstance
 import com.example.rxjavasamples.retrofit.model.User
 import retrofit2.Call

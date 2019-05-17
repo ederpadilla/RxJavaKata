@@ -23,7 +23,7 @@
         </activity>
         <activity android:name=".operators.OperatorsActivity">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".firststeps.MainActivity">
         </activity>
         <activity
                 android:name="com.example.androidtutz.todolistapp.AddToDoActivity"

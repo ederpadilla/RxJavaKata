@@ -1,10 +1,9 @@
 package com.example.rxjavasamples.operators
 
-import com.example.rxjavasamples.DebugUtils
+import com.example.rxjavasamples.util.DebugUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Function
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
