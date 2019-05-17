@@ -4,6 +4,8 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.rxjavasamples.util.DebugUtils
 
 import com.example.rxjavasamples.movies.adapter.MovieAdapter
@@ -11,6 +13,7 @@ import com.example.rxjavasamples.movies.model.Movie
 import com.example.rxjavasamples.movies.model.MovieDBResponse
 import com.example.rxjavasamples.movies.service.RetrofitInstance
 import com.example.rxjavasamples.R
+import com.example.rxjavasamples.movies.viewmodel.MoviesViewModel
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -38,6 +41,7 @@ class MoviesActivity : AppCompatActivity() {
     private val compositeDisposable = CompositeDisposable()
     private lateinit var  flowable : Flowable<MovieDBResponse>
 
+    private lateinit var moviesViewModel : MoviesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +52,18 @@ class MoviesActivity : AppCompatActivity() {
         swipeContainer = findViewById(R.id.swipe_layout)
         swipeContainer!!.setColorSchemeResources(R.color.colorPrimary)
         swipeContainer!!.setOnRefreshListener { getRxPopularMovies() }
+        moviesViewModel = ViewModelProviders
+            .of(this)
+            .get(MoviesViewModel::class.java)
+        moviesViewModel.allMovies
+            .observe(this,Observer{
+
+                movies.clear()
+                movies.addAll(it)
+                init()
+            })
         //getPopularMovies()
-        getRxPopularMovies()
+        //getRxPopularMovies()
         //getFlowablePopularMovies()
 
     }
@@ -161,8 +175,6 @@ class MoviesActivity : AppCompatActivity() {
 
 
     fun init() {
-
-
         recyclerView = findViewById(R.id.rvMovies)
         movieAdapter = MovieAdapter(this, movies)
 
